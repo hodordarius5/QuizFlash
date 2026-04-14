@@ -1,4 +1,4 @@
-package com.example.quizflash.ui.screens
+package com.example.quizflash.model
 
 data class Question(
     val text: String,

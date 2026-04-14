@@ -19,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.quizflash.model.Question
+import com.example.quizflash.data.SampleData
 
 @Composable
 fun QuizScreen() {
@@ -27,18 +29,7 @@ fun QuizScreen() {
     var questionIndex by remember { mutableIntStateOf(0) }
     var quizFinished by remember { mutableStateOf(false) }
 
-    val questions = listOf(
-        Question(
-            text = "Capitala Franței?",
-            answers = listOf("Berlin", "Madrid", "Paris", "Roma"),
-            correctIndex = 2
-        ),
-        Question(
-            text = "2 + 2 = ?",
-            answers = listOf("3", "4", "5", "6"),
-            correctIndex = 1
-        )
-    )
+    val questions = SampleData.questions
 
     Column(
         modifier = Modifier
