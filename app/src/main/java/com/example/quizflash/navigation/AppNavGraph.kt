@@ -9,6 +9,8 @@ import com.example.quizflash.ui.screens.FlashcardScreen
 import com.example.quizflash.ui.screens.HomeScreen
 import com.example.quizflash.ui.screens.QuizScreen
 import com.example.quizflash.ui.screens.ResultsScreen
+import com.example.quizflash.ui.screens.LoginScreen
+import com.example.quizflash.ui.screens.RegisterScreen
 
 @Composable
 fun AppNavGraph(modifier: Modifier = Modifier) {
@@ -16,9 +18,35 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = "login",
         modifier = modifier
     ) {
+        composable("login") {
+            LoginScreen(
+                onLoginClick = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                onGoToRegisterClick = {
+                    navController.navigate("register")
+                }
+            )
+        }
+
+        composable("register") {
+            RegisterScreen(
+                onRegisterClick = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                onBackToLoginClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable("home") {
             HomeScreen(
                 onQuizClick = { navController.navigate("quiz") },
