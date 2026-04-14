@@ -20,12 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-data class Question(
-    val text: String,
-    val answers: List<String>,
-    val correctIndex: Int
-)
-
 @Composable
 fun QuizScreen() {
     var selectedAnswer by remember { mutableStateOf<Int?>(null) }
