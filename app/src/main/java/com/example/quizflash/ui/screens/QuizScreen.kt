@@ -21,6 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.quizflash.model.Question
 import com.example.quizflash.data.SampleData
+import androidx.compose.runtime.LaunchedEffect
+import com.example.quizflash.network.RetrofitInstance
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.Alignment
+import android.util.Log
 
 @Composable
 fun QuizScreen() {
@@ -29,7 +34,53 @@ fun QuizScreen() {
     var questionIndex by remember { mutableIntStateOf(0) }
     var quizFinished by remember { mutableStateOf(false) }
 
-    val questions = SampleData.questions
+    var questions by remember { mutableStateOf<List<Question>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+
+
+
+    LaunchedEffect(Unit) {
+        try {
+            questions = RetrofitInstance.api.getQuestions()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("QuizScreen", "Error loading questions", e)
+        }
+        loading = false
+    }
+
+    if (loading) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    if (questions.isEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("No questions loaded.")
+        }
+        return
+    }
+
+    if (questionIndex !in questions.indices) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Invalid question index.")
+        }
+        return
+    }
 
     Column(
         modifier = Modifier
