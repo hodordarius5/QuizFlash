@@ -23,7 +23,7 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
     ) {
         composable("login") {
             LoginScreen(
-                onLoginClick = {
+                onLoginSuccess = {
                     navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }
@@ -36,7 +36,7 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
 
         composable("register") {
             RegisterScreen(
-                onRegisterClick = {
+                onRegisterSuccess = {
                     navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }

@@ -26,6 +26,8 @@ import com.example.quizflash.network.RetrofitInstance
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import android.util.Log
+import com.example.quizflash.model.SaveResultRequest
+import com.example.quizflash.session.SessionManager
 
 @Composable
 fun QuizScreen() {
@@ -37,7 +39,7 @@ fun QuizScreen() {
     var questions by remember { mutableStateOf<List<Question>>(emptyList()) }
     var loading by remember { mutableStateOf(true) }
 
-
+    var resultSaved by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         try {
@@ -80,6 +82,26 @@ fun QuizScreen() {
             Text("Invalid question index.")
         }
         return
+    }
+
+    LaunchedEffect(quizFinished) {
+        if (quizFinished && !resultSaved) {
+            val userId = SessionManager.userId
+            if (userId != null) {
+                try {
+                    RetrofitInstance.api.saveResult(
+                        SaveResultRequest(
+                            userId = userId,
+                            score = score,
+                            totalQuestions = questions.size
+                        )
+                    )
+                    resultSaved = true
+                } catch (e: Exception) {
+                    Log.e("QuizScreen", "Error saving result", e)
+                }
+            }
+        }
     }
 
     Column(
@@ -170,6 +192,7 @@ fun QuizScreen() {
                     score = 0
                     selectedAnswer = null
                     quizFinished = false
+                    resultSaved = false
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

@@ -65,7 +65,7 @@ fun HomeScreen(
             onClick = onResultsClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Results")
+            Text("Rezultate")
         }
     }
 }
